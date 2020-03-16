@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import logo from './logo.svg';
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -7,12 +7,24 @@ import './App.css'
 import whiskey from './img/whiskey.jpg'
 import hazel from './img/hazel.jpg'
 import tubby from './img/tubby.jpg'
-import DogList from './DogList';
+import DogList from './DogList'
+import DogDetails from './DogDetails'
+import Navbar from './Navbar'
 
 function App(props) {
-   
+
+  const renderDogDetails = routeProps => {
+    let name = routeProps.match.params.name;
+    let currentDog = props.dogs.find( dog => dog.name.toLowerCase() === name.toLowerCase())
+    return <DogDetails {...routeProps} dog={currentDog} />
+  }
+
   return (
-    <Route exact path="/dogs" render = {() => <DogList dogs={props.dogs} />} />
+    <>
+    <Navbar dogs={props.dogs}/>
+    <Route exact path="/dogs" render={() => <DogList dogs={props.dogs} />} />
+    <Route exact path="/dogs/:name" render={renderDogDetails} />
+    </>
   )
 }
 App.defaultProps = {
